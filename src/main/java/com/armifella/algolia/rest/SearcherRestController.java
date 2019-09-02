@@ -1,5 +1,6 @@
 package com.armifella.algolia.rest;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -29,7 +30,7 @@ public class SearcherRestController {
 
 	@CrossOrigin("*")
 	@GetMapping(path = "/{keyword}")
-	public List<Product> getContacts(@PathVariable(value = "keyword")String keyword) throws InterruptedException, ExecutionException {
+	public List<Product> getContacts(@PathVariable(value = "keyword")String keyword) throws InterruptedException, ExecutionException , IOException {
 		System.out.println("###keyword :" + keyword);
 		return contactService.getContacts(keyword);
 	}

@@ -1,5 +1,6 @@
 package com.armifella.algolia.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ import com.armifella.algolia.service.ContactService;
 public class ContactServiceImpl implements ContactService {
 
 	@Override
-	public List<Product> getContacts(String keyword) throws InterruptedException, ExecutionException {
+	public List<Product> getContacts(String keyword) throws InterruptedException, ExecutionException, IOException {
 		List<Product> productList =  findSuggestions(keyword);
 		return productList;
 	}
@@ -42,7 +43,7 @@ public class ContactServiceImpl implements ContactService {
 		index.saveObjectsAsync(Arrays.asList(data1,data1));
 	}
 	
-	private List<Product> findSuggestions(String keyword) throws InterruptedException, ExecutionException {
+	private List<Product> findSuggestions(String keyword) throws InterruptedException, ExecutionException, IOException {
 		List<Product> contactList = new ArrayList<>();
 		SearchClient client = DefaultSearchClient.create("LGRVUQI268", "d6b5a2526b847526097c0361fb7488ab");
 		SearchIndex<Product> index = client.initIndex("products", Product.class);
@@ -50,6 +51,8 @@ public class ContactServiceImpl implements ContactService {
 		//Async version
 		SearchResult<Product> result = index.searchAsync(new Query(keyword)).get();
 		contactList = result.getHits();
+		
+		client.close();
 		
 		return contactList;
 	}
